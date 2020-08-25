@@ -246,7 +246,7 @@ const actions = {
     // Get all ids and children ids if any
     const ids = deepRemoveFromObj(state.data)
     api.reorder(ids, function (resp) {
-      commit(NOTIFICATION.SET_NOTIF, { message: resp.data.message, variant: resp.data.variant })
+      commit(NOTIFICATION.SET_NOTIF, { message: resp.data.message, variant: resp.data.variant, needpublished: resp.data.needPublished })
     })
   },
   [ACTIONS.SET_DATATABLE] ({ commit, state, dispatch }) {
@@ -258,7 +258,7 @@ const actions = {
   },
   [ACTIONS.TOGGLE_PUBLISH] ({ commit, state, dispatch }, row) {
     api.togglePublished(row, function (resp) {
-      commit(NOTIFICATION.SET_NOTIF, { message: resp.data.message, variant: resp.data.variant })
+      commit(NOTIFICATION.SET_NOTIF, { message: resp.data.message, variant: resp.data.variant, needpublished: resp.data.needPublished })
       dispatch(ACTIONS.GET_DATATABLE)
     }, function (errorResp) {
       commit(NOTIFICATION.SET_NOTIF, { message: errorResp.data.error.message, variant: 'error' })
@@ -266,7 +266,7 @@ const actions = {
   },
   [ACTIONS.DELETE_ROW] ({ commit, state, dispatch }, row) {
     api.delete(row, function (resp) {
-      commit(NOTIFICATION.SET_NOTIF, { message: resp.data.message, variant: resp.data.variant })
+      commit(NOTIFICATION.SET_NOTIF, { message: resp.data.message, variant: resp.data.variant, needpublished: resp.data.needPublished })
       dispatch(ACTIONS.GET_DATATABLE)
     })
   },
@@ -297,7 +297,7 @@ const actions = {
         toPublish: payload.toPublish
       },
       function (resp) {
-        commit(NOTIFICATION.SET_NOTIF, { message: resp.data.message, variant: resp.data.variant })
+        commit(NOTIFICATION.SET_NOTIF, { message: resp.data.message, variant: resp.data.variant, needpublished: resp.data.needPublished })
         dispatch(ACTIONS.GET_DATATABLE)
       }
     )
@@ -328,7 +328,7 @@ const actions = {
   },
   [ACTIONS.BULK_DELETE] ({ commit, state, dispatch }) {
     api.bulkDelete(state.bulk.join(), function (resp) {
-      commit(NOTIFICATION.SET_NOTIF, { message: resp.data.message, variant: resp.data.variant })
+      commit(NOTIFICATION.SET_NOTIF, { message: resp.data.message, variant: resp.data.variant, needpublished: resp.data.needPublished })
       dispatch(ACTIONS.GET_DATATABLE)
     })
   },
