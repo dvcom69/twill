@@ -5,15 +5,17 @@
     </head>
     <body class="env env--{{ app()->environment() }} @yield('appTypeClass')">
         <div class="svg-sprite">
-            @if(config('twill.dev_mode', false))
-                {!! file_get_contents(twillAsset('icons.svg')) !!}
-                {!! file_get_contents(twillAsset('icons-files.svg')) !!}
-                {!! file_get_contents(twillAsset('icons-wysiwyg.svg')) !!}
-            @else
-                {!! File::exists(public_path(twillAsset('icons.svg'))) ? File::get(public_path(twillAsset('icons.svg'))) : '' !!}
-                {!! File::exists(public_path(twillAsset('icons-files.svg'))) ? File::get(public_path(twillAsset('icons-files.svg'))) : '' !!}
-                {!! File::exists(public_path(twillAsset('icons-wysiwyg.svg'))) ? File::get(public_path(twillAsset('icons-wysiwyg.svg'))) : '' !!}
-            @endif
+        @php
+            $arrContextOptions=array(
+                "ssl"=>array(
+                    "verify_peer"=>false,
+                    "verify_peer_name"=>false,
+                ),
+            );  
+            @endphp
+            {!! file_get_contents(twillAsset('icons.svg'), false, stream_context_create($arrContextOptions)) !!}
+            {!! file_get_contents(twillAsset('icons-files.svg'), false, stream_context_create($arrContextOptions)) !!}
+            {!! file_get_contents(twillAsset('icons-wysiwyg.svg'), false, stream_context_create($arrContextOptions)) !!}
         </div>
         @if(config('twill.enabled.search', false))
             @partialView(($moduleName ?? null), 'navigation._overlay_navigation', ['search' => true])
